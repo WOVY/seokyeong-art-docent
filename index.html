@@ -25,19 +25,28 @@
 
         /* 콘텐츠를 감싸는 카드 스타일 */
         .card {
-            max-width: 420px;
+            max-width: 380px; 
             width: 100%;
             border: 1.5px solid #ffffff;
-            border-radius: 24px; /* 이미지의 둥근 모서리보다 살짝 크게 */
+            border-radius: 24px;
             overflow: hidden; /* 이미지의 둥근 모서리 적용을 위함 */
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
-        /* 작품 이미지 */
+        /* 사진을 감싸는 컨테이너에 패딩(공백) 추가 */
+        .image-container {
+            padding: 10px; /* 사진과 테두리 사이 공백 */
+            background-color: #000000;
+            border-radius: 24px; /* 카드의 둥근 모서리와 맞춰줍니다 */
+            overflow: hidden; /* 이미지의 튀어나오는 부분을 숨깁니다 */
+        }
+
+        /* 작품 이미지 - 이제 부모 컨테이너 크기에 맞춰집니다 */
         .artwork-image {
             width: 100%;
-            height: auto;
-            display: block;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12.5px;
         }
 
         /* 하단 컨트롤 영역 (제목, 아티스트, 재생 버튼) */
@@ -90,7 +99,9 @@
 <body>
 
     <div class="card">
-        <img src="images/artwork.jpg" alt="KARMA" class="artwork-image">
+        <div class="image-container">
+            <img src="artwork.jpg" alt="KARMA" class="artwork-image">
+        </div>
 
         <div class="controls">
             <div class="info">
@@ -108,7 +119,7 @@
         </div>
     </div>
 
-    <audio id="audioPlayer" src="audio/docent.mp3"></audio>
+    <audio id="audioPlayer" src="docent.mp3"></audio>
 
     <script>
         // 필요한 요소들을 가져옵니다.
@@ -139,6 +150,4 @@
     </script>
 
 </body>
-
 </html>
-
