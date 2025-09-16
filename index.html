@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>KARMA - 공명</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 전체 페이지 스타일: 검은 배경, 콘텐츠 중앙 정렬 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* 콘텐츠를 감싸는 카드 스타일 */
+        .card {
+            max-width: 420px;
+            width: 100%;
+            border: 1.5px solid #ffffff;
+            border-radius: 24px; /* 이미지의 둥근 모서리보다 살짝 크게 */
+            overflow: hidden; /* 이미지의 둥근 모서리 적용을 위함 */
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        /* 작품 이미지 */
+        .artwork-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* 하단 컨트롤 영역 (제목, 아티스트, 재생 버튼) */
+        .controls {
+            background-color: #000000;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between; /* 양쪽 끝으로 정렬 */
+            align-items: center; /* 수직 중앙 정렬 */
+        }
+
+        .info .title {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .info .artist {
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        /* 재생/일시정지 버튼 */
+        .play-pause-button {
+            background-color: #ffffff;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%; /* 원형 버튼 */
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0; /* 버튼 크기 유지 */
+        }
+
+        .play-pause-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* 일시정지 아이콘은 기본적으로 숨김 */
+        .pause-icon {
+            display: none;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <img src="artwork.jpg" alt="KARMA" class="artwork-image">
+
+        <div class="controls">
+            <div class="info">
+                <h1 class="title">KARMA</h1>
+                <p class="artist">공명</p>
+            </div>
+            <button class="play-pause-button" id="playPauseBtn">
+                <svg class="play-icon" viewBox="0 0 24 24">
+                    <path fill="black" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
+                </svg>
+                <svg class="pause-icon" viewBox="0 0 24 24">
+                    <path fill="black" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="docent.mp3"></audio>
+
+    <script>
+        // 필요한 요소들을 가져옵니다.
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playIcon = document.querySelector('.play-icon');
+        const pauseIcon = document.querySelector('.pause-icon');
+
+        // 재생/일시정지 버튼 클릭 이벤트
+        playPauseBtn.addEventListener('click', () => {
+            // 오디오가 멈춰있는지 확인
+            if (audioPlayer.paused) {
+                audioPlayer.play(); // 재생
+                playIcon.style.display = 'none'; // 재생 아이콘 숨기기
+                pauseIcon.style.display = 'block'; // 일시정지 아이콘 보이기
+            } else {
+                audioPlayer.pause(); // 일시정지
+                playIcon.style.display = 'block'; // 재생 아이콘 보이기
+                pauseIcon.style.display = 'none'; // 일시정지 아이콘 숨기기
+            }
+        });
+
+        // 오디오 재생이 끝나면 버튼을 다시 '재생' 상태로 변경
+        audioPlayer.addEventListener('ended', () => {
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
