@@ -5,14 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>KARMA - 공명</title>
     <style>
-        /* 기본 스타일 초기화 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        /* 전체 페이지 스타일: 검은 배경, 콘텐츠 중앙 정렬 */
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: #000000;
@@ -22,133 +19,130 @@
             min-height: 100vh;
             padding: 30px;
         }
-
-        /* 콘텐츠를 감싸는 카드 스타일 */
         .card {
-            max-width: 380px; 
+            max-width: 380px;
             width: 100%;
             border: 1.5px solid #ffffff;
             border-radius: 24px;
-            overflow: hidden; /* 이미지의 둥근 모서리 적용을 위함 */
+            overflow: hidden;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
-
-        /* 사진을 감싸는 컨테이너에 패딩(공백) 추가 */
         .image-container {
-            padding: 10px; /* 사진과 테두리 사이 공백 */
+            padding: 10px;
             background-color: #000000;
-            border-radius: 24px; /* 카드의 둥근 모서리와 맞춰줍니다 */
-            overflow: hidden; /* 이미지의 튀어나오는 부분을 숨깁니다 */
+            border-radius: 24px;
+            overflow: hidden;
         }
-
-        /* 작품 이미지 - 이제 부모 컨테이너 크기에 맞춰집니다 */
         .artwork-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 12.5px;
         }
-
-        /* 하단 컨트롤 영역 (제목, 아티스트, 재생 버튼) */
         .controls {
             background-color: #000000;
             padding: 20px 24px;
             display: flex;
-            justify-content: space-between; /* 양쪽 끝으로 정렬 */
-            align-items: center; /* 수직 중앙 정렬 */
+            justify-content: space-between;
+            align-items: center;
         }
-
         .info .title {
             color: #ffffff;
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 4px;
         }
-
         .info .artist {
             color: #ffffff;
             font-size: 14px;
         }
-
-        /* 재생/일시정지 버튼 */
-        .play-pause-button {
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 12px; /* 버튼 사이 간격 */
+        }
+        .play-pause-button, .restart-button {
             background-color: #ffffff;
             border: none;
             width: 44px;
             height: 44px;
-            border-radius: 50%; /* 원형 버튼 */
+            border-radius: 50%;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-shrink: 0; /* 버튼 크기 유지 */
+            flex-shrink: 0;
         }
-
-        .play-pause-button svg {
+        
+        .play-pause-button svg, .restart-button svg {
             width: 20px;
             height: 20px;
         }
-
-        /* 일시정지 아이콘은 기본적으로 숨김 */
         .pause-icon {
             display: none;
         }
-        
     </style>
 </head>
 <body>
-
     <div class="card">
         <div class="image-container">
             <img src="images/artwork.jpg" alt="KARMA" class="artwork-image">
         </div>
-
         <div class="controls">
             <div class="info">
                 <h1 class="title">KARMA</h1>
                 <p class="artist">공명</p>
             </div>
-            <button class="play-pause-button" id="playPauseBtn">
-                <svg class="play-icon" viewBox="0 0 24 24">
-                    <path fill="black" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
-                </svg>
-                <svg class="pause-icon" viewBox="0 0 24 24">
-                    <path fill="black" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
-                </svg>
-            </button>
+            <div class="button-group">
+                <button class="restart-button" id="restartBtn" title="다시 재생">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="black" d="M12,5V1L7,6L12,11V8C15.31,8 18,10.69 18,14C18,17.31 15.31,20 12,20C8.69,20 6,17.31 6,14H4C4,18.42 7.58,22 12,22C16.42,22 20,18.42 20,14C20,9.58 16.42,6 12,6V5Z" />
+                    </svg>
+                </button>
+                <button class="play-pause-button" id="playPauseBtn">
+                    <svg class="play-icon" viewBox="0 0 24 24">
+                        <path fill="black" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
+                    </svg>
+                    <svg class="pause-icon" viewBox="0 0 24 24">
+                        <path fill="black" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 
     <audio id="audioPlayer" src="audio/docent.mp3"></audio>
 
     <script>
-        // 필요한 요소들을 가져옵니다.
         const playPauseBtn = document.getElementById('playPauseBtn');
         const audioPlayer = document.getElementById('audioPlayer');
         const playIcon = document.querySelector('.play-icon');
         const pauseIcon = document.querySelector('.pause-icon');
+        const restartBtn = document.getElementById('restartBtn');
 
-        // 재생/일시정지 버튼 클릭 이벤트
         playPauseBtn.addEventListener('click', () => {
-            // 오디오가 멈춰있는지 확인
             if (audioPlayer.paused) {
-                audioPlayer.play(); // 재생
-                playIcon.style.display = 'none'; // 재생 아이콘 숨기기
-                pauseIcon.style.display = 'block'; // 일시정지 아이콘 보이기
+                audioPlayer.play();
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
             } else {
-                audioPlayer.pause(); // 일시정지
-                playIcon.style.display = 'block'; // 재생 아이콘 보이기
-                pauseIcon.style.display = 'none'; // 일시정지 아이콘 숨기기
+                audioPlayer.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
             }
         });
 
-        // 오디오 재생이 끝나면 버튼을 다시 '재생' 상태로 변경
+        restartBtn.addEventListener('click', () => {
+            audioPlayer.currentTime = 0;
+            audioPlayer.play();
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+        });
+        
         audioPlayer.addEventListener('ended', () => {
             playIcon.style.display = 'block';
             pauseIcon.style.display = 'none';
         });
     </script>
-
 </body>
-
 </html>
